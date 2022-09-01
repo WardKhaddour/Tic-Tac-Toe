@@ -32,6 +32,19 @@ io.on('connection', socket => {
   const client = { id: socket.id, name: clients[socket.id].userName };
   socket.broadcast.emit('client connected', client);
 
+  socket.on('play against user', id => {
+    const user = {
+      id: socket.id,
+      name: socket.userName,
+    };
+    clients[id].emit('playing request', user);
+  });
+
+  socket.on('accept request', id => {});
+  socket.on('reject request', id => {
+    clients[id].emit('request rejected', client.name);
+  });
+
   socket.on('disconnect', () => {
     socket.broadcast.emit('client disconnected', socket.id);
     delete clients[socket.id];
