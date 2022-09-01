@@ -9,3 +9,20 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+#clients-container {
+  margin: 15px;
+}
+
+.client {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.hide {
+  display: none;
+}
+
+.error {
+  color: red;
+}

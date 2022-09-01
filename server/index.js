@@ -9,15 +9,34 @@ const io = new Server(httpServer, {
 });
 
 io.use((socket, next) => {
-  const username = socket.handshake.auth.userName;
-  if (!username) {
-    return next(new Error('invalid username'));
+  const userName = socket.handshake.auth.userName;
+  if (!userName) {
+    return next(new Error('invalid  name'));
   }
-  socket.username = username;
+  socket.userName = userName;
   next();
 });
 
-io.on('connection', socket => {});
+const clients = {};
+
+io.on('connection', socket => {
+  const onlineClients = [];
+  for (let [id, socket] of io.of('/').sockets) {
+    onlineClients.push({
+      id: id,
+      name: socket.userName,
+    });
+  }
+  socket.emit('online clients', onlineClients);
+  clients[socket.id] = socket;
+  const client = { id: socket.id, name: clients[socket.id].userName };
+  socket.broadcast.emit('client connected', client);
+
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('client disconnected', socket.id);
+    delete clients[socket.id];
+  });
+});
 
 const PORT = 3000;
 
