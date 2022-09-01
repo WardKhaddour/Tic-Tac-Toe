@@ -10,7 +10,7 @@ const clientsContainer = document.querySelector('#clients-container');
 
 const playingRequest = document.querySelector('#playing-request');
 
-const notification = document.querySelector('#notification');
+const notificationContainer = document.querySelector('#notification-container');
 
 // const requestTitle = document.querySelector('#request-title');
 
@@ -143,12 +143,12 @@ function handleResponse(e) {
 }
 
 function notify(message) {
-  viewElement(notification);
+  viewElement(notificationContainer);
   const notificationEl = document.createElement('div');
   notificationEl.innerText = message;
-  notification.append(notificationEl);
+  notificationContainer.append(notificationEl);
+  notificationEl.classList.add('notification');
   setTimeout(() => {
     notificationEl.remove();
-    hideElement(notification);
   }, 2000);
 }
