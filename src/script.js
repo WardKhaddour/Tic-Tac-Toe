@@ -12,10 +12,15 @@ const playingRequest = document.querySelector('#playing-request');
 
 const notificationContainer = document.querySelector('#notification-container');
 
-// const requestTitle = document.querySelector('#request-title');
+const gridContainer = document.querySelector('#grid-container');
+
+const board = document.querySelector('#board');
+
+const cells = document.querySelectorAll('.cell');
 
 let userName;
-
+let myTurn = false;
+let mySymbol;
 //SOCKET
 //-------------------------------
 const URL = 'http://localhost:3000';
@@ -26,18 +31,56 @@ socket.onAny((event, ...args) => {
 });
 
 socket.on('online clients', clients => {
+  clearClients();
   clients.forEach(renderClient);
 });
 
 socket.on('client connected', renderClient);
-socket.on('client disconnected', removeClient);
+
+socket.on('client disconnected', (disconnectedClient, onlineClients) => {
+  clearClients();
+  onlineClients.forEach(renderClient);
+});
 
 socket.on('playing request', client => {
   renderPlayingRequest(client);
 });
 
+socket.on('request accepted', () => {
+  hideElement(clientsContainer);
+  hideElement(notificationContainer);
+  viewElement(gridContainer);
+});
+
 socket.on('request rejected', name => {
+  socket.disconnect();
   notify(`${name} has rejected your request`);
+});
+
+socket.on('game started', symbol => (mySymbol = symbol));
+
+socket.on('my turn', () => {
+  cells.forEach(cell => removeClass(cell, 'blocked'));
+  myTurn = true;
+});
+
+socket.on('opponent turn', () => {
+  cells.forEach(cell => addClass(cell, 'blocked'));
+  myTurn = false;
+});
+
+socket.on('cell selected', renderSymbol);
+
+socket.on('win', () => {
+  renderState('win');
+});
+
+socket.on('lose', () => {
+  renderState('lose');
+});
+
+socket.on('tie', () => {
+  renderState('tie');
 });
 
 //EVENT LISTENERS
@@ -48,6 +91,8 @@ inputUserNameForm.addEventListener('submit', getUserName);
 clientsContainer.addEventListener('click', emitPlayingRequest);
 
 playingRequest.addEventListener('click', handleResponse);
+
+gridContainer.addEventListener('click', handleSelection);
 
 //FUNCTIONS
 //-------------------------------
@@ -98,6 +143,10 @@ function removeClient(id) {
   client.remove();
 }
 
+function clearClients() {
+  clientsContainer.innerHTML = '';
+}
+
 function emitPlayingRequest(e) {
   if (e.target.tagName !== 'BUTTON') return;
   const opponentId = e.target.dataset.id;
@@ -140,6 +189,46 @@ function handleResponse(e) {
     }
     socket.emit('reject request', id);
   }
+}
+
+function handleSelection(e) {
+  if (!e.target.classList.contains('cell') || !myTurn) return;
+  if (e.target.innerText !== '') return;
+  const cell = e.target.dataset.num;
+
+  renderSymbol(cell, mySymbol);
+  socket.emit('select cell', cell);
+}
+
+function renderSymbol(cell, symbol) {
+  const currentCell = [...cells].filter(c => c.dataset.num === cell)[0];
+  currentCell.innerText = symbol;
+  if (symbol === mySymbol) {
+    addClass(currentCell, 'my-symbol');
+  } else {
+    addClass(currentCell, 'opponent-symbol');
+  }
+}
+
+function renderState(state) {
+  if (state === 'tie') notify('Game ended, Tie!');
+  else notify(`Game ended, you ${state}`);
+  setTimeout(reset, 1500);
+}
+function reset() {
+  viewElement(clientsContainer);
+  viewElement(notificationContainer);
+  hideElement(gridContainer);
+  [...cells].forEach(cell => {
+    cell.innerText = '';
+    cell.classList = ['cell'];
+  });
+  socket.disconnect();
+  socket.auth = { userName };
+  socket.connect();
+  socket.emit('reset');
+  mySymbol = undefined;
+  myTurn = false;
 }
 
 function notify(message) {

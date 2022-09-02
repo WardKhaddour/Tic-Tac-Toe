@@ -1,9 +1,14 @@
 * {
   box-sizing: border-box;
-  --primary-color: rgba(255, 255, 255, 0.8);
+  --primary-color: #2196f3;
   --error-color: rgb(177, 30, 30);
   --request-background: rgb(119, 113, 113);
   --notification: rgb(24, 22, 22);
+  --cell-background: rgba(255, 255, 255, 0.8);
+  --cell-border: rgba(0, 0, 0, 0.8);
+  --cell-hover-background: grey;
+  --my-symbol: rgb(30, 30, 240);
+  --opponent-symbol: rgb(252, 17, 17);
 }
 body {
   height: 100vh;
@@ -22,11 +27,38 @@ body {
   bottom: 0;
   right: 0;
 }
+#board {
+  width: 400px;
+  height: 400px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: var(--primary-color);
+  padding: 10px;
+}
+
+.blocked:hover {
+  cursor: not-allowed !important;
+  background-color: var(--error-color) !important;
+}
 .notification {
   background-color: var(--notification);
   border-radius: 10px;
   padding: 10px;
   color: white;
+}
+.cell {
+  background-color: var(--cell-background);
+  border: 1px solid var(--cell-border);
+  font-size: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell:hover {
+  cursor: pointer;
+  background: var(--cell-hover-background);
 }
 
 .client {
@@ -59,4 +91,11 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.my-symbol {
+  color: var(--my-symbol);
+}
+.opponent-symbol {
+  color: var(--opponent-symbol);
 }

@@ -1,5 +1,6 @@
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const Game = require('./Game.js');
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -40,16 +41,32 @@ io.on('connection', socket => {
     clients[id].emit('playing request', user);
   });
 
-  socket.on('accept request', id => {});
+  socket.on('accept request', id => {
+    clients[id].opponent = clients[socket.id];
+    clients[socket.id].opponent = clients[id];
+    socket.emit('request accepted', 'HELLO');
+    clients[id].emit('request accepted', 'HELLO');
+    const game = new Game(clients[id], socket);
+    clients[id].game = game;
+    socket.game = game;
+    game.startGame();
+  });
+
   socket.on('reject request', id => {
     clients[id].emit('request rejected', client.name);
   });
 
   socket.on('disconnect', () => {
-    socket.broadcast.emit('client disconnected', socket.id);
+    console.log(socket.userName, 'disconnected');
+    io.emit('client disconnected', socket.id, onlineClients);
     delete clients[socket.id];
   });
 });
+
+function reset(id1, id2) {
+  clients[id1].opponent = undefined;
+  clients[id2].opponent = undefined;
+}
 
 const PORT = 3000;
 
