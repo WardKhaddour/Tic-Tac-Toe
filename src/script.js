@@ -35,9 +35,9 @@ let opponent;
 const URL = 'http://localhost:3000';
 const socket = io(URL, { autoConnect: false });
 
-socket.onAny((event, ...args) => {
-  console.log(event, args);
-});
+// socket.onAny((event, ...args) => {
+//   console.log(event, args);
+// });
 
 socket.on('online clients', clients => {
   clearClients();
@@ -187,7 +187,6 @@ function handleResponse(e) {
 
   // requestTitle.innerText = '';
   const id = e.target.dataset.id;
-  console.log(id);
   if (e.target.classList.contains('accept')) {
     //Accept Request
     removeClass(playingRequest, 'flex-center');

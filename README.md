@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-Online Tic Tac Toe Game with private chat between each two players
+Online Tic Tac Toe Game with private chat between each two players all in real time
 
 ## Install the dependencies
 
@@ -17,4 +17,6 @@ node index.js
 
 ### Start the front-end app
 
-open src/index.html file
+```bash
+npm start
+```

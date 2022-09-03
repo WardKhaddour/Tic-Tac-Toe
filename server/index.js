@@ -42,8 +42,6 @@ io.on('connection', socket => {
   });
 
   socket.on('accept request', id => {
-    console.log(`id=${id}`);
-    console.log(`socket id=${socket.id}`);
     clients[id].opponent = clients[socket.id];
     clients[socket.id].opponent = clients[id];
     socket.emit('request accepted', id);
@@ -66,7 +64,6 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
-    console.log(socket.userName, 'disconnected');
     io.emit('client disconnected', socket.id, onlineClients);
     delete clients[socket.id];
   });
@@ -74,6 +71,4 @@ io.on('connection', socket => {
 
 const PORT = 3000;
 
-httpServer.listen(PORT, () =>
-  console.log(`server listening at http://localhost:${PORT}`)
-);
+httpServer.listen(PORT);
