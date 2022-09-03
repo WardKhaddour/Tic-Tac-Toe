@@ -7,8 +7,8 @@
   --cell-background: rgba(255, 255, 255, 0.8);
   --cell-border: rgba(0, 0, 0, 0.8);
   --cell-hover-background: grey;
-  --my-symbol: rgb(30, 30, 240);
-  --opponent-symbol: rgb(252, 17, 17);
+  --my-color: rgb(30, 30, 240);
+  --opponent-color: rgb(252, 17, 17);
 }
 body {
   height: 100vh;
@@ -34,6 +34,58 @@ body {
   grid-template-columns: auto auto auto;
   background-color: var(--primary-color);
   padding: 10px;
+}
+
+#chat {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  height: 40vh;
+  width: 20vw;
+}
+
+#message-form {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+}
+
+#message-input {
+  width: 80%;
+}
+#close-chat {
+  border-radius: 50%;
+  background-color: transparent;
+  border: 0;
+  font-size: 20px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.message {
+  margin: 1px 3px;
+  list-style: none;
+}
+
+.from-me {
+  font-weight: bold;
+  padding: 0 2px;
+  color: var(--my-color);
+}
+
+.from-opponent {
+  padding: 0 5px;
+  color: var(--opponent-color);
 }
 
 .blocked:hover {
@@ -93,9 +145,14 @@ body {
   align-items: center;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .my-symbol {
-  color: var(--my-symbol);
+  color: var(--my-color);
 }
 .opponent-symbol {
-  color: var(--opponent-symbol);
+  color: var(--opponent-color);
 }

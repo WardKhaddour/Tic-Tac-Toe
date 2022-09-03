@@ -42,10 +42,12 @@ io.on('connection', socket => {
   });
 
   socket.on('accept request', id => {
+    console.log(`id=${id}`);
+    console.log(`socket id=${socket.id}`);
     clients[id].opponent = clients[socket.id];
     clients[socket.id].opponent = clients[id];
-    socket.emit('request accepted', 'HELLO');
-    clients[id].emit('request accepted', 'HELLO');
+    socket.emit('request accepted', id);
+    clients[id].emit('request accepted', id);
     const game = new Game(clients[id], socket);
     clients[id].game = game;
     socket.game = game;
@@ -56,17 +58,19 @@ io.on('connection', socket => {
     clients[id].emit('request rejected', client.name);
   });
 
+  socket.on('message', message => {
+    clients[socket.id].opponent.emit('new message', {
+      message,
+      fromMe: false,
+    });
+  });
+
   socket.on('disconnect', () => {
     console.log(socket.userName, 'disconnected');
     io.emit('client disconnected', socket.id, onlineClients);
     delete clients[socket.id];
   });
 });
-
-function reset(id1, id2) {
-  clients[id1].opponent = undefined;
-  clients[id2].opponent = undefined;
-}
 
 const PORT = 3000;
 

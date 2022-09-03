@@ -18,9 +18,18 @@ const board = document.querySelector('#board');
 
 const cells = document.querySelectorAll('.cell');
 
+const chat = document.querySelector('#chat');
+
+const messageForm = document.querySelector('#message-form');
+
+const messageInput = document.querySelector('#message-input');
+
+const closeChatButton = document.querySelector('#close-chat');
+
 let userName;
 let myTurn = false;
 let mySymbol;
+let opponent;
 //SOCKET
 //-------------------------------
 const URL = 'http://localhost:3000';
@@ -46,10 +55,11 @@ socket.on('playing request', client => {
   renderPlayingRequest(client);
 });
 
-socket.on('request accepted', () => {
+socket.on('request accepted', id => {
   hideElement(clientsContainer);
   hideElement(notificationContainer);
   viewElement(gridContainer);
+  // opponent = id;
 });
 
 socket.on('request rejected', name => {
@@ -83,6 +93,8 @@ socket.on('tie', () => {
   renderState('tie');
 });
 
+socket.on('new message', renderMessage);
+
 //EVENT LISTENERS
 //-------------------------------
 
@@ -94,6 +106,9 @@ playingRequest.addEventListener('click', handleResponse);
 
 gridContainer.addEventListener('click', handleSelection);
 
+messageForm.addEventListener('submit', sendMessage);
+
+closeChatButton.addEventListener('click', toggleChat);
 //FUNCTIONS
 //-------------------------------
 
@@ -178,6 +193,7 @@ function handleResponse(e) {
     removeClass(playingRequest, 'flex-center');
     hideElement(playingRequest);
     playingRequest.innerHTML = '';
+    opponent = id;
     socket.emit('accept request', id);
   }
   if (e.target.classList.contains('reject')) {
@@ -226,9 +242,32 @@ function reset() {
   socket.disconnect();
   socket.auth = { userName };
   socket.connect();
-  socket.emit('reset');
   mySymbol = undefined;
   myTurn = false;
+}
+
+function sendMessage(e) {
+  e.preventDefault();
+  const message = messageInput.value;
+  if (!message) {
+    return;
+  }
+  messageInput.value = '';
+  socket.emit('message', message);
+  renderMessage({ message, fromMe: true });
+}
+
+function renderMessage(data) {
+  const { message, fromMe } = data;
+  const messageEl = document.createElement('li');
+  messageEl.classList.add(fromMe ? 'from-me' : 'from-opponent');
+  messageEl.classList.add('message');
+  messageEl.innerText = message;
+  chat.append(messageEl);
+}
+
+function toggleChat() {
+  chat.classList.toggle('hide');
 }
 
 function notify(message) {
