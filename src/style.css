@@ -40,7 +40,7 @@ body {
   position: absolute;
   right: 20px;
   bottom: 10px;
-  border: 1px solid var(--primary-color);
+  border: 5px solid var(--primary-color);
   border-radius: 10px;
   height: 40vh;
   width: 20vw;
@@ -55,6 +55,7 @@ body {
   position: absolute;
   bottom: 2px;
   left: 2px;
+  padding: 5px;
 }
 
 #message-input {
