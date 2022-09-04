@@ -32,7 +32,7 @@ let mySymbol;
 let opponent;
 //SOCKET
 //-------------------------------
-const URL = 'http://localhost:3000';
+const URL = 'http://localhost:3000/';
 const socket = io(URL, { autoConnect: false });
 
 // socket.onAny((event, ...args) => {

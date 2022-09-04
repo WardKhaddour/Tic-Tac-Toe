@@ -1,12 +1,21 @@
+const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const Game = require('./Game.js');
+const app = express();
+const httpServer = createServer(app);
 
-const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
     origin: 'http://localhost:5500',
   },
+});
+
+const Game = require('./Game.js');
+
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req, res) => {
+  res.sendFile('public/index.html', { root: __dirname });
 });
 
 io.use((socket, next) => {
