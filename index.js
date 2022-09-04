@@ -6,7 +6,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:5500',
+    origin: 'https://tic-tac-toe22.herokuapp.com/',
   },
 });
 
