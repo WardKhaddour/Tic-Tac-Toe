@@ -17,11 +17,21 @@
   </head>
   <body>
     <form id="input-user-name-form">
-      <div for="">Type Your Name</div>
+      <div id="welcome-message">
+        Welcome to Tic Tac Toe game!
+        <br />
+        <br />
+        Type your name and connect to user to start playing
+      </div>
+      <div>Type Your Name</div>
       <input type="text" name="" id="user-name-input" />
       <input type="submit" value="Submit" />
       <div id="error-user-name" class="hide error">Invalid User Name</div>
     </form>
+    <div id="no-clients" class="hide">
+      No users online :( <br />
+      Wait user to connect or Invite a friend
+    </div>
     <div id="clients-container" class="hide"></div>
     <div id="playing-request" class="hide playing-request"></div>
     <div id="notification-container"></div>

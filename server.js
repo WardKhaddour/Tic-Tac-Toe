@@ -6,16 +6,16 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://tic-tac-toe22.herokuapp.com/',
+    origin: 'https://tic-tac-toe-22.glitch.me',
   },
 });
 
 const Game = require(`${__dirname}/Game.js`);
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
 
-app.get('/', (req, res) => {
-  res.sendFile('public/index.html', { root: __dirname });
-});
+// app.get('/', (req, res) => {
+//   res.sendFile('public/index.html', { root: __dirname });
+// });
 
 io.use((socket, next) => {
   const userName = socket.handshake.auth.userName;
@@ -68,6 +68,7 @@ io.on('connection', socket => {
     clients[socket.id].opponent.emit('new message', {
       message,
       fromMe: false,
+      sender: clients[socket.id].opponent.userName,
     });
   });
 

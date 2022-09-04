@@ -8,6 +8,8 @@ const errorUserName = document.querySelector('#error-user-name');
 
 const clientsContainer = document.querySelector('#clients-container');
 
+const noClients = document.querySelector('#no-clients');
+
 const playingRequest = document.querySelector('#playing-request');
 
 const notificationContainer = document.querySelector('#notification-container');
@@ -41,10 +43,19 @@ const socket = io(URL, { autoConnect: false });
 
 socket.on('online clients', clients => {
   clearClients();
+  if (clients.length === 1) {
+    viewElement(noClients);
+  } else {
+    hideElement(noClients);
+  }
   clients.forEach(renderClient);
 });
 
-socket.on('client connected', renderClient);
+socket.on('client connected', client => {
+  hideElement(noClients);
+
+  renderClient(client);
+});
 
 socket.on('client disconnected', (disconnectedClient, onlineClients) => {
   if (disconnectedClient === opponent) reset();
@@ -60,6 +71,7 @@ socket.on('request accepted', id => {
   hideElement(clientsContainer);
   hideElement(notificationContainer);
   viewElement(gridContainer);
+  addClass(gridContainer, 'flex-center');
   // opponent = id;
 });
 
@@ -171,11 +183,11 @@ function emitPlayingRequest(e) {
 
 function renderPlayingRequest(user) {
   viewElement(playingRequest);
-  addClass(playingRequest, 'flex-center');
+  addClass(playingRequest, 'flex-evenly-center');
   const request = `
   <div>
     <div>${user.name} wants to play</div>
-    <div class="buttons">
+    <div class="flex-around">
       <button class="accept" data-id=${user.id}>Accept</button>
       <button class="reject" data-id=${user.id}>Reject</button>
     </div>
@@ -190,7 +202,7 @@ function handleResponse(e) {
   const id = e.target.dataset.id;
   if (e.target.classList.contains('accept')) {
     //Accept Request
-    removeClass(playingRequest, 'flex-center');
+    removeClass(playingRequest, 'flex-evenly-center');
     hideElement(playingRequest);
     playingRequest.innerHTML = '';
     opponent = id;
@@ -200,7 +212,7 @@ function handleResponse(e) {
     //Reject Request
     e.target.parentElement.parentElement.remove();
     if (!playingRequest.children.length) {
-      removeClass(playingRequest, 'flex-center');
+      removeClass(playingRequest, 'flex-evenly-center');
       hideElement(playingRequest);
     }
     socket.emit('reject request', id);
@@ -234,6 +246,7 @@ function renderState(state) {
 function reset() {
   viewElement(clientsContainer);
   viewElement(notificationContainer);
+  removeClass(gridContainer, 'flex-center');
   hideElement(gridContainer);
   [...cells].forEach(cell => {
     cell.innerText = '';
@@ -254,15 +267,15 @@ function sendMessage(e) {
   }
   messageInput.value = '';
   socket.emit('message', message);
-  renderMessage({ message, fromMe: true });
+  renderMessage({ message, fromMe: true, sender: 'You' });
 }
 
 function renderMessage(data) {
-  const { message, fromMe } = data;
+  const { message, fromMe, sender } = data;
   const messageEl = document.createElement('li');
   messageEl.classList.add(fromMe ? 'from-me' : 'from-opponent');
   messageEl.classList.add('message');
-  messageEl.innerText = message;
+  messageEl.innerText = `${sender}: ${message}`;
   chat.append(messageEl);
 }
 
