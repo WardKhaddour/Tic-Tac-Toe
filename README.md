@@ -11,12 +11,5 @@ npm install
 ### Start the server
 
 ```bash
-cd server
-node index.js
-```
-
-### Start the front-end app
-
-```bash
 npm start
 ```
