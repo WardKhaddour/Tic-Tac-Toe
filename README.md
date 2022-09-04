@@ -13,3 +13,11 @@ npm install
 ```bash
 npm start
 ```
+
+### Run in development mode
+
+```bash
+npm run dev
+```
+
+and open (http://localhost:3000/) in your browser

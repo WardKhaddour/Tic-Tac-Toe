@@ -22,11 +22,13 @@ const cells = document.querySelectorAll('.cell');
 
 const chat = document.querySelector('#chat');
 
+const messagesContainer = document.querySelector('#messages-container');
+
 const messageForm = document.querySelector('#message-form');
 
 const messageInput = document.querySelector('#message-input');
 
-const closeChatButton = document.querySelector('#close-chat');
+const toggleChatButton = document.querySelector('#toggle-chat');
 
 let userName;
 let myTurn = false;
@@ -34,7 +36,10 @@ let mySymbol;
 let opponent;
 //SOCKET
 //-------------------------------
-const URL = 'https://tic-tac-toe-22.glitch.me/';
+const URL =
+  location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000'
+    : 'https://tic-tac-toe-22.glitch.me/';
 const socket = io(URL, { autoConnect: false });
 
 // socket.onAny((event, ...args) => {
@@ -67,7 +72,7 @@ socket.on('playing request', client => {
   renderPlayingRequest(client);
 });
 
-socket.on('request accepted', id => {
+socket.on('request accepted', () => {
   hideElement(clientsContainer);
   hideElement(notificationContainer);
   viewElement(gridContainer);
@@ -76,7 +81,7 @@ socket.on('request accepted', id => {
 });
 
 socket.on('request rejected', name => {
-  socket.disconnect();
+  // socket.disconnect();
   notify(`${name} has rejected your request`);
 });
 
@@ -121,7 +126,7 @@ gridContainer.addEventListener('click', handleSelection);
 
 messageForm.addEventListener('submit', sendMessage);
 
-closeChatButton.addEventListener('click', toggleChat);
+toggleChatButton.addEventListener('click', toggleChat);
 //FUNCTIONS
 //-------------------------------
 
@@ -131,6 +136,10 @@ function hideElement(el) {
 
 function viewElement(el) {
   el.classList.remove('hide');
+}
+
+function isViewed(el) {
+  return !el.classList.contains('hide');
 }
 
 function addClass(el, className) {
@@ -173,6 +182,10 @@ function removeClient(id) {
 
 function clearClients() {
   clientsContainer.innerHTML = '';
+}
+
+function clearChat() {
+  messagesContainer.innerHTML = '';
 }
 
 function emitPlayingRequest(e) {
@@ -248,6 +261,7 @@ function reset() {
   viewElement(notificationContainer);
   removeClass(gridContainer, 'flex-center');
   hideElement(gridContainer);
+  clearChat();
   [...cells].forEach(cell => {
     cell.innerText = '';
     cell.classList = ['cell'];
@@ -266,21 +280,27 @@ function sendMessage(e) {
     return;
   }
   messageInput.value = '';
-  socket.emit('message', message);
+  socket.emit('message', { message, sender: userName });
   renderMessage({ message, fromMe: true, sender: 'You' });
 }
 
 function renderMessage(data) {
   const { message, fromMe, sender } = data;
+  console.log(data);
   const messageEl = document.createElement('li');
   messageEl.classList.add(fromMe ? 'from-me' : 'from-opponent');
   messageEl.classList.add('message');
   messageEl.innerText = `${sender}: ${message}`;
-  chat.append(messageEl);
+  messagesContainer.append(messageEl);
+  if (!isViewed(chat)) {
+    toggleChat();
+  }
+  chat.scrollTop = chat.scrollHeight;
 }
 
 function toggleChat() {
   chat.classList.toggle('hide');
+  chat.classList.toggle('flex-column-between');
 }
 
 function notify(message) {

@@ -6,7 +6,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://tic-tac-toe-22.glitch.me',
+    origin: ['http://localhost:3000', 'https://tic-tac-toe-22.glitch.me'],
   },
 });
 
@@ -52,8 +52,8 @@ io.on('connection', socket => {
   socket.on('accept request', id => {
     clients[id].opponent = clients[socket.id];
     clients[socket.id].opponent = clients[id];
-    socket.emit('request accepted', id);
-    clients[id].emit('request accepted', id);
+    socket.emit('request accepted');
+    clients[id].emit('request accepted');
     const game = new Game(clients[id], socket);
     clients[id].game = game;
     socket.game = game;
@@ -64,11 +64,12 @@ io.on('connection', socket => {
     clients[id].emit('request rejected', client.name);
   });
 
-  socket.on('message', message => {
+  socket.on('message', data => {
+    const { message, sender } = data;
     clients[socket.id].opponent.emit('new message', {
       message,
       fromMe: false,
-      sender: clients[socket.id].opponent.userName,
+      sender,
     });
   });
 

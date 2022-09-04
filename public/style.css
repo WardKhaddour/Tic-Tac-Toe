@@ -2,6 +2,8 @@
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --primary-color: #2196f3;
+  --secondary-color: rgb(58, 56, 56);
+  --accent-color: rgb(241, 231, 231);
   --error-color: rgb(177, 30, 30);
   --request-background: rgb(119, 113, 113);
   --notification: rgb(24, 22, 22);
@@ -24,7 +26,6 @@ body {
   font-size: large;
   top: 10px;
   left: 10px;
-  width: 100%;
   padding: 10px;
 }
 
@@ -57,10 +58,12 @@ body {
   position: absolute;
   right: 20px;
   bottom: 10px;
-  border: 5px solid var(--primary-color);
+  border: 5px solid var(--secondary-color);
   border-radius: 10px;
   height: 40vh;
   width: 20vw;
+  overflow-y: scroll;
+  overflow-x: scroll;
 }
 
 #message-form {
@@ -69,20 +72,21 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
-  position: absolute;
-  bottom: 2px;
-  left: 2px;
+  padding: 5px;
+}
+
+#messages-container {
   padding: 5px;
 }
 
 #message-input {
   width: 80%;
 }
-#close-chat {
+#toggle-chat {
   border-radius: 50%;
   background-color: transparent;
   border: 0;
-  font-size: 20px;
+  font-size: 24px;
   position: absolute;
   bottom: 5px;
   right: 5px;
@@ -163,6 +167,12 @@ body {
   align-items: center;
 }
 
+.flex-column-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .flex-around {
   display: flex;
   justify-content: space-around;
@@ -204,4 +214,26 @@ body {
     width: 60vw;
     height: 30vh;
   }
+}
+/* width */
+::-webkit-scrollbar {
+  border-radius: 50px;
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background: var(--primary-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
 }
