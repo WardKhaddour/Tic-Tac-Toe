@@ -32,7 +32,7 @@ let mySymbol;
 let opponent;
 //SOCKET
 //-------------------------------
-const URL = 'https://tic-tac-toe22.herokuapp.com/';
+const URL = 'https://tic-tac-toe-22.glitch.me/';
 const socket = io(URL, { autoConnect: false });
 
 // socket.onAny((event, ...args) => {
@@ -47,6 +47,7 @@ socket.on('online clients', clients => {
 socket.on('client connected', renderClient);
 
 socket.on('client disconnected', (disconnectedClient, onlineClients) => {
+  if (disconnectedClient === opponent) reset();
   clearClients();
   onlineClients.forEach(renderClient);
 });
@@ -278,5 +279,5 @@ function notify(message) {
   notificationEl.classList.add('notification');
   setTimeout(() => {
     notificationEl.remove();
-  }, 2000);
+  }, 2500);
 }

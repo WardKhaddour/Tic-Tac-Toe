@@ -8,7 +8,7 @@ Online Tic Tac Toe Game with private chat between each two players all in real t
 npm install
 ```
 
-### Start the server
+### Start the game
 
 ```bash
 npm start
