@@ -10,8 +10,7 @@ const io = new Server(httpServer, {
   },
 });
 
-const Game = require('./Game.js');
-
+const Game = require(`${__dirname}/Game.js`);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {

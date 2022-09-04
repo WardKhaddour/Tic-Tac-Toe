@@ -2,9 +2,9 @@
   "name": "tic-tac-toe",
   "version": "1.0.0",
   "description": "Online Tic Tac Toe game in real time",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "author": "Ward Khaddour",
   "license": "ISC",

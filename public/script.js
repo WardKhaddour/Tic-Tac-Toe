@@ -270,6 +270,7 @@ function toggleChat() {
 }
 
 function notify(message) {
+  toggleChat();
   viewElement(notificationContainer);
   const notificationEl = document.createElement('div');
   notificationEl.innerText = message;
