@@ -29,18 +29,18 @@ body {
   padding: 10px;
 }
 
-#clients-container {
+#clientsContainer {
   margin: 15px;
 }
 
-#notification-container {
+#notificationContainer {
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 3;
 }
 
-#grid-container {
+#gridContainer {
   width: 100%;
   height: 100%;
 }
@@ -66,7 +66,7 @@ body {
   overflow-x: scroll;
 }
 
-#message-form {
+#messageForm {
   width: 90%;
   display: flex;
   flex-direction: row;
@@ -75,14 +75,14 @@ body {
   padding: 5px;
 }
 
-#messages-container {
+#messagesContainer {
   padding: 5px;
 }
 
-#message-input {
+#messageInput {
   width: 80%;
 }
-#toggle-chat {
+#toggleChatButton {
   border-radius: 50%;
   background-color: transparent;
   border: 0;
@@ -148,7 +148,7 @@ body {
   color: var(--error-color);
 }
 
-.playing-request {
+.playingRequest {
   padding: 20px;
   border-radius: 10%;
   background-color: var(--request-background);

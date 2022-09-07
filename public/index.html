@@ -16,7 +16,7 @@
     <script defer src="script.js"></script>
   </head>
   <body>
-    <form id="input-user-name-form">
+    <form id="inputUserNameForm">
       <div id="welcome-message">
         Welcome to Tic Tac Toe game!
         <br />
@@ -24,23 +24,23 @@
         Type your name and connect to user to start playing
       </div>
       <div>Type Your Name</div>
-      <input type="text" name="" id="user-name-input" />
+      <input type="text" name="" id="userNameInput" />
       <input type="submit" value="Submit" />
-      <div id="error-user-name" class="hide error">Invalid User Name</div>
+      <div id="errorUserName" class="hide error">Invalid User Name</div>
     </form>
-    <div id="no-clients" class="hide">
+    <div id="noClients" class="hide">
       No users online :( <br />
       Wait user to connect or Invite a friend
     </div>
-    <div id="clients-container" class="hide"></div>
-    <div id="playing-request" class="hide playing-request"></div>
-    <div id="notification-container"></div>
-    <div id="grid-container" class="hide">
-      <button id="toggle-chat">&#128172;</button>
+    <div id="clientsContainer" class="hide"></div>
+    <div id="playingRequest" class="hide playingRequest"></div>
+    <div id="notificationContainer"></div>
+    <div id="gridContainer" class="hide">
+      <button id="toggleChatButton">&#128172;</button>
       <div id="chat" class="hide">
-        <div id="messages-container"></div>
-        <form id="message-form">
-          <input type="text" name="" id="message-input" />
+        <div id="messagesContainer"></div>
+        <form id="messageForm">
+          <input type="text" name="" id="messageInput" />
           <input type="submit" value="Send" />
         </form>
       </div>

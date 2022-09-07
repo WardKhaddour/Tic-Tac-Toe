@@ -1,39 +1,12 @@
 //ELEMENTS
 //-------------------------------
-const inputUserNameForm = document.querySelector('#input-user-name-form');
-
-const userNameInput = document.querySelector('#user-name-input');
-
-const errorUserName = document.querySelector('#error-user-name');
-
-const clientsContainer = document.querySelector('#clients-container');
-
-const noClients = document.querySelector('#no-clients');
-
-const playingRequest = document.querySelector('#playing-request');
-
-const notificationContainer = document.querySelector('#notification-container');
-
-const gridContainer = document.querySelector('#grid-container');
-
-const board = document.querySelector('#board');
-
 const cells = document.querySelectorAll('.cell');
-
-const chat = document.querySelector('#chat');
-
-const messagesContainer = document.querySelector('#messages-container');
-
-const messageForm = document.querySelector('#message-form');
-
-const messageInput = document.querySelector('#message-input');
-
-const toggleChatButton = document.querySelector('#toggle-chat');
 
 let userName;
 let myTurn = false;
 let mySymbol;
 let opponent;
+
 //SOCKET
 //-------------------------------
 const URL =
@@ -286,7 +259,6 @@ function sendMessage(e) {
 
 function renderMessage(data) {
   const { message, fromMe, sender } = data;
-  console.log(data);
   const messageEl = document.createElement('li');
   messageEl.classList.add(fromMe ? 'from-me' : 'from-opponent');
   messageEl.classList.add('message');
