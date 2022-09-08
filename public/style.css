@@ -1,17 +1,17 @@
 * {
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --primary-color: #2196f3;
-  --secondary-color: rgb(58, 56, 56);
-  --accent-color: rgb(241, 231, 231);
+  --primary-color: #021625;
+  --secondary-color: rgb(24, 24, 24);
+  --accent-color: rgb(233, 210, 210);
   --error-color: rgb(177, 30, 30);
-  --request-background: rgb(119, 113, 113);
+  --request-background: rgb(201, 201, 201);
   --notification: rgb(24, 22, 22);
   --cell-background: rgba(255, 255, 255, 0.8);
   --cell-border: rgba(0, 0, 0, 0.8);
   --cell-hover-background: grey;
-  --my-color: rgb(30, 30, 240);
-  --opponent-color: rgb(252, 17, 17);
+  --my-color: rgb(0, 0, 0);
+  --opponent-color: rgba(0, 0, 0, 0.527);
 }
 body {
   height: 100vh;
@@ -21,12 +21,40 @@ body {
   align-items: center;
 }
 
+button,
+input[type='submit'] {
+  text-transform: uppercase;
+  background: var(--secondary-color);
+  color: var(--accent-color);
+  border: none;
+  padding: 3px 7px;
+  margin: 0 2px;
+}
+button:hover,
+input[type='submit']:hover {
+  cursor: pointer;
+  text-shadow: var(--secondary-color) 0 0 10px;
+  border-radius: 20px;
+  color: var(--primary-color);
+  font-weight: bold;
+  background-color: var(--accent-color);
+}
+
 #welcome-message {
   position: absolute;
   font-size: large;
   top: 10px;
   left: 10px;
   padding: 10px;
+}
+
+#userNameInput:focus {
+  outline: none;
+  border: 2px solid var(--primary-color);
+}
+
+#userNameInput.error {
+  border: 2px solid var(--error-color);
 }
 
 #clientsContainer {
@@ -49,7 +77,8 @@ body {
   width: 400px;
   height: 400px;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   background-color: var(--primary-color);
   padding: 10px;
 }
@@ -64,6 +93,7 @@ body {
   width: 20vw;
   overflow-y: scroll;
   overflow-x: scroll;
+  word-break: break-all;
 }
 
 #messageForm {
@@ -77,6 +107,8 @@ body {
 
 #messagesContainer {
   padding: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
 #messageInput {
@@ -95,19 +127,24 @@ body {
 }
 
 .message {
-  margin: 1px 3px;
   list-style: none;
+  margin: 15px 0px;
+  padding: 4px 20px;
+  width: fit-content;
+  color: white;
+  border-radius: 10px;
+  overflow-wrap: break-word;
 }
 
 .from-me {
   font-weight: bold;
-  padding: 0 2px;
-  color: var(--my-color);
+  background-color: var(--my-color);
 }
 
 .from-opponent {
-  padding: 0 5px;
-  color: var(--opponent-color);
+  align-self: flex-end;
+  right: 0;
+  background-color: var(--opponent-color);
 }
 
 .blocked:hover {
@@ -230,7 +267,7 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
 
-  background: var(--primary-color);
+  background: var(--secondary-color-color);
 }
 
 /* Handle on hover */

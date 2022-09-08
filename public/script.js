@@ -128,8 +128,10 @@ function getUserName(e) {
   userName = userNameInput.value;
   if (!userName) {
     viewElement(errorUserName);
+    addClass(userNameInput, 'error');
     return;
   }
+  removeClass(userNameInput, 'error');
   hideElement(errorUserName);
   hideElement(inputUserNameForm);
   viewElement(clientsContainer);
@@ -262,7 +264,7 @@ function renderMessage(data) {
   const messageEl = document.createElement('li');
   messageEl.classList.add(fromMe ? 'from-me' : 'from-opponent');
   messageEl.classList.add('message');
-  messageEl.innerText = `${sender}: ${message}`;
+  messageEl.innerText = `${message}`;
   messagesContainer.append(messageEl);
   if (!isViewed(chat)) {
     toggleChat();
